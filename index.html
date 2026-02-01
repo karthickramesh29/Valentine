@@ -32,8 +32,8 @@
 
     @keyframes pop { from {transform:scale(.9);opacity:0;} to {transform:scale(1);opacity:1;} }
 
-    h1 { color:#ff4b5c; font-size:24px; }
-    p { color:#555; font-size:15px; margin-bottom:26px; }
+    h1 { color:#ff4a5c; font-size:24px; }
+    p { color:#659; font-size:15px; margin-bottom:26px; }
 
     .buttons { position:relative; height:140px; }
 
@@ -46,7 +46,7 @@
     #yes { background:#ff4b5c; color:white; width:80%; max-width:240px; }
 
     #no {
-      background:#eee; color:#333; position:absolute; left:50%; top:70px;
+      background:#eee; color:#230; position:absolute; left:50%; top:70px;
       transform:translateX(-50%); z-index:10;
     }
 
@@ -61,7 +61,7 @@
 
     .message { display:none; margin-top:20px; font-size:18px; font-weight:600; color:#ff4b5c; }
 
-    .verse { margin-top:14px; font-size:15px; color:#444; line-height:1.6; }
+    .verse { margin-top:14px; font-size:15px; color:#999; line-height:1.6; }
 
     .confetti,.heart { position:absolute; pointer-events:none; }
     .confetti { width:8px; height:14px; animation:fall linear forwards; }
@@ -159,7 +159,7 @@
     noBtn.onclick = () => {
       noSound.play();
       noBtn.classList.add('shake');
-      popup('NEVER ❌ You are married now 💍❤️');
+      popup('It is not an option ❌ You are married now 💍❤️');
       setTimeout(()=>noBtn.classList.remove('shake'),400);
     };
 
