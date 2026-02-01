@@ -16,7 +16,6 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
-      touch-action: manipulation;
     }
 
     .card {
@@ -31,137 +30,73 @@
       z-index: 5;
     }
 
-    @keyframes pop {
-      from { transform: scale(0.9); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
+    @keyframes pop { from {transform:scale(.9);opacity:0;} to {transform:scale(1);opacity:1;} }
 
-    h1 {
-      color: #ff4b5c;
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
+    h1 { color:#ff4b5c; font-size:24px; }
+    p { color:#555; font-size:15px; margin-bottom:26px; }
 
-    p {
-      color: #555;
-      font-size: 15px;
-      margin-bottom: 26px;
-    }
-
-    .buttons {
-      position: relative;
-      height: 140px;
-    }
+    .buttons { position:relative; height:140px; }
 
     button {
-      border: none;
-      padding: 14px 30px;
-      font-size: 16px;
-      border-radius: 30px;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
+      border:none; padding:14px 30px; font-size:16px; border-radius:30px;
+      cursor:pointer; -webkit-tap-highlight-color:transparent;
+      transition: transform .2s;
     }
 
-    #yes {
-      background: #ff4b5c;
-      color: white;
-      width: 80%;
-      max-width: 240px;
-    }
+    #yes { background:#ff4b5c; color:white; width:80%; max-width:240px; }
 
     #no {
-      background: #eee;
-      color: #333;
-      position: absolute;
-      left: 50%;
-      top: 70px;
-      transform: translateX(-50%);
+      background:#eee; color:#333; position:absolute; left:50%; top:70px;
+      transform:translateX(-50%); z-index:10;
     }
 
-    .message {
-      display: none;
-      margin-top: 20px;
-      font-size: 18px;
-      font-weight: 600;
-      color: #ff4b5c;
+    #no.shake { animation: shake .4s; }
+    @keyframes shake {
+      0%{transform:translateX(-50%) rotate(0)}
+      25%{transform:translateX(-55%) rotate(-5deg)}
+      50%{transform:translateX(-45%) rotate(5deg)}
+      75%{transform:translateX(-55%) rotate(-5deg)}
+      100%{transform:translateX(-50%) rotate(0)}
     }
 
-    .verse {
-      margin-top: 14px;
-      font-size: 15px;
-      font-weight: 500;
-      color: #444;
-      line-height: 1.6;
-    }
+    .message { display:none; margin-top:20px; font-size:18px; font-weight:600; color:#ff4b5c; }
 
-    .hearts { font-size: 26px; margin-top: 8px; }
+    .verse { margin-top:14px; font-size:15px; color:#444; line-height:1.6; }
 
-    .confetti, .heart {
-      position: absolute;
-      pointer-events: none;
-    }
+    .confetti,.heart { position:absolute; pointer-events:none; }
+    .confetti { width:8px; height:14px; animation:fall linear forwards; }
+    .heart { font-size:20px; animation:floatUp linear forwards; }
 
-    .confetti {
-      width: 8px;
-      height: 14px;
-      animation: fall linear forwards;
-    }
+    @keyframes fall { to { transform:translateY(110vh) rotate(360deg); opacity:0;} }
+    @keyframes floatUp { to { transform:translateY(-120vh); opacity:0;} }
 
-    .heart {
-      font-size: 20px;
-      animation: floatUp linear forwards;
-    }
-
-    @keyframes fall {
-      to { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-    }
-
-    @keyframes floatUp {
-      to { transform: translateY(-120vh); opacity: 0; }
-    }
-
-    /* NO popup */
     .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 20;
-      animation: fadeIn 0.3s ease;
+      position:fixed; inset:0; background:rgba(0,0,0,.6);
+      display:flex; justify-content:center; align-items:center;
+      z-index:20; opacity:0; animation:fadeIn .3s forwards;
     }
 
-    @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+    @keyframes fadeIn { to {opacity:1;} }
+    @keyframes fadeOut { to {opacity:0;} }
 
     .popup {
-      background: white;
-      padding: 30px 22px;
-      border-radius: 22px;
-      text-align: center;
-      width: 85%;
-      max-width: 320px;
-      animation: pop 0.4s ease;
+      background:white; padding:30px 22px; border-radius:22px;
+      text-align:center; width:85%; max-width:320px;
+      animation:pop .4s ease;
     }
 
-    .popup h2 {
-      color: #ff4b5c;
-      font-size: 22px;
-      margin: 0;
-    }
-
-    .popup p {
-      margin-top: 12px;
-      font-size: 15px;
-      color: #333;
-      font-weight: 600;
-    }
+    .popup h2 { color:#ff4b5c; margin:0; }
+    .popup p { margin-top:12px; font-weight:600; }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Priyanka, will you be my Valentine? 💖</h1>
-    <p>You make my world brighter every single day.</p>
+
+  <audio id="noSound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+  <audio id="yesSound" src="https://actions.google.com/sounds/v1/cartoon/concussive_drum_hit.ogg"></audio>
+
+  <div class="card" id="card">
+    <h1 id="title">Priyanka, will you be my Valentine? 💖</h1>
+    <p id="subtitle">You make my world brighter every single day.</p>
 
     <div class="buttons" id="buttons">
       <button id="yes">Yes 💕</button>
@@ -176,56 +111,72 @@
         No plans, no rush, just hearts in sync,<br>
         A simple date — more than we think. 💑✨
       </div>
-      <div class="hearts">💖💖💖</div>
     </div>
   </div>
 
   <script>
     const yesBtn = document.getElementById('yes');
     const noBtn = document.getElementById('no');
-    const message = document.getElementById('message');
     const buttons = document.getElementById('buttons');
+    const message = document.getElementById('message');
+    const title = document.getElementById('title');
+    const subtitle = document.getElementById('subtitle');
+    const card = document.getElementById('card');
+    const noSound = document.getElementById('noSound');
+    const yesSound = document.getElementById('yesSound');
 
-    function createConfetti() {
-      const c = document.createElement('div');
-      c.className = 'confetti';
-      c.style.left = Math.random() * window.innerWidth + 'px';
-      c.style.background = `hsl(${Math.random()*360},100%,70%)`;
-      c.style.animationDuration = Math.random()*3+2+'s';
-      document.body.appendChild(c);
-      setTimeout(() => c.remove(), 5000);
-    }
-
-    function createHeart() {
-      const h = document.createElement('div');
-      h.className = 'heart';
-      h.innerHTML = '❤️';
-      h.style.left = Math.random()*window.innerWidth + 'px';
-      h.style.bottom = '-20px';
-      h.style.animationDuration = Math.random()*3+3+'s';
-      document.body.appendChild(h);
-      setTimeout(() => h.remove(), 6000);
-    }
-
-    yesBtn.addEventListener('click', () => {
-      buttons.style.display = 'none';
-      message.style.display = 'block';
-      setInterval(createConfetti, 200);
-      setInterval(createHeart, 300);
-    });
-
-    noBtn.addEventListener('click', () => {
+    function popup(text) {
       const overlay = document.createElement('div');
       overlay.className = 'overlay';
-      overlay.innerHTML = `
-        <div class="popup">
-          <h2>NEVER ❌</h2>
-          <p>You are married now,<br>so you have no option 😌💍</p>
-        </div>`;
+      overlay.innerHTML = `<div class="popup"><h2>${text}</h2></div>`;
       document.body.appendChild(overlay);
+      setTimeout(() => {
+        overlay.style.animation = 'fadeOut .4s forwards';
+        setTimeout(() => overlay.remove(), 400);
+      }, 1500);
+    }
 
-      setTimeout(() => overlay.remove(), 2000);
-    });
+    function confetti() {
+      const c = document.createElement('div');
+      c.className='confetti';
+      c.style.left=Math.random()*innerWidth+'px';
+      c.style.background=`hsl(${Math.random()*360},100%,70%)`;
+      c.style.animationDuration=Math.random()*3+2+'s';
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(),5000);
+    }
+
+    function heart() {
+      const h=document.createElement('div');
+      h.className='heart'; h.innerHTML='❤️';
+      h.style.left=Math.random()*innerWidth+'px';
+      h.style.bottom='-20px';
+      h.style.animationDuration=Math.random()*3+3+'s';
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(),6000);
+    }
+
+    noBtn.onclick = () => {
+      noSound.play();
+      noBtn.classList.add('shake');
+      popup('NEVER ❌ You are married now 💍❤️');
+      setTimeout(()=>noBtn.classList.remove('shake'),400);
+    };
+
+    yesBtn.onclick = () => {
+      yesSound.play();
+      buttons.style.display='none';
+      message.style.display='block';
+      setInterval(confetti,200);
+      setInterval(heart,300);
+
+      setTimeout(()=>{
+        title.innerHTML='Will you be my Valentine forever? ♾️💖';
+        subtitle.innerHTML='Think carefully… there is only one right answer 😌';
+        message.style.display='none';
+        buttons.style.display='block';
+      },3500);
+    };
   </script>
 </body>
 </html>
