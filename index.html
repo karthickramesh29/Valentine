@@ -86,9 +86,17 @@
       color: #ff4b5c;
     }
 
+    .verse {
+      margin-top: 14px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #444;
+      line-height: 1.6;
+    }
+
     .hearts { font-size: 26px; margin-top: 8px; }
 
-    .confetti, .heart, .spark {
+    .confetti, .heart {
       position: absolute;
       pointer-events: none;
     }
@@ -104,14 +112,6 @@
       animation: floatUp linear forwards;
     }
 
-    .spark {
-      width: 6px;
-      height: 6px;
-      background: #ff4b5c;
-      border-radius: 50%;
-      animation: explode 700ms ease-out forwards;
-    }
-
     @keyframes fall {
       to { transform: translateY(110vh) rotate(360deg); opacity: 0; }
     }
@@ -120,11 +120,7 @@
       to { transform: translateY(-120vh); opacity: 0; }
     }
 
-    @keyframes explode {
-      to { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
-    }
-
-    /* POPUP */
+    /* NO popup */
     .overlay {
       position: fixed;
       inset: 0;
@@ -140,8 +136,8 @@
 
     .popup {
       background: white;
-      padding: 30px 24px;
-      border-radius: 20px;
+      padding: 30px 22px;
+      border-radius: 22px;
       text-align: center;
       width: 85%;
       max-width: 320px;
@@ -156,7 +152,7 @@
 
     .popup p {
       margin-top: 12px;
-      font-size: 16px;
+      font-size: 15px;
       color: #333;
       font-weight: 600;
     }
@@ -174,47 +170,21 @@
 
     <div class="message" id="message">
       I'm the luckiest person on the planet 🌍❤️
+      <div class="verse">
+        Let’s steal a quiet evening, just you and me,<br>
+        Coffee, laughter, and where the night may be.<br>
+        No plans, no rush, just hearts in sync,<br>
+        A simple date — more than we think. 💑✨
+      </div>
       <div class="hearts">💖💖💖</div>
     </div>
   </div>
 
   <script>
-    const noBtn = document.getElementById('no');
     const yesBtn = document.getElementById('yes');
+    const noBtn = document.getElementById('no');
     const message = document.getElementById('message');
     const buttons = document.getElementById('buttons');
-
-    function explodeNo(x, y) {
-      noBtn.style.display = 'none';
-
-      for (let i = 0; i < 25; i++) {
-        const spark = document.createElement('div');
-        spark.className = 'spark';
-        spark.style.left = x + 'px';
-        spark.style.top = y + 'px';
-        spark.style.setProperty('--x', `${Math.random()*160-80}px`);
-        spark.style.setProperty('--y', `${Math.random()*160-80}px`);
-        document.body.appendChild(spark);
-        setTimeout(() => spark.remove(), 800);
-      }
-
-      const overlay = document.createElement('div');
-      overlay.className = 'overlay';
-      overlay.innerHTML = `
-        <div class="popup">
-          <h2>NEVER ❌</h2>
-          <p>YOU ARE MARRIED NOW 💍❤️</p>
-        </div>`;
-      document.body.appendChild(overlay);
-
-      setTimeout(() => overlay.remove(), 2000);
-    }
-
-    noBtn.addEventListener('click', (e) => explodeNo(e.clientX, e.clientY));
-    noBtn.addEventListener('touchstart', (e) => {
-      const t = e.touches[0];
-      explodeNo(t.clientX, t.clientY);
-    });
 
     function createConfetti() {
       const c = document.createElement('div');
@@ -242,6 +212,19 @@
       message.style.display = 'block';
       setInterval(createConfetti, 200);
       setInterval(createHeart, 300);
+    });
+
+    noBtn.addEventListener('click', () => {
+      const overlay = document.createElement('div');
+      overlay.className = 'overlay';
+      overlay.innerHTML = `
+        <div class="popup">
+          <h2>NEVER ❌</h2>
+          <p>You are married now,<br>so you have no option 😌💍</p>
+        </div>`;
+      document.body.appendChild(overlay);
+
+      setTimeout(() => overlay.remove(), 2000);
     });
   </script>
 </body>
